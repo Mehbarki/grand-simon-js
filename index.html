@@ -2,12 +2,40 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>Le jeu du Grand Simon</title>
+
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" integrity="sha384-LTIDeidl25h2dPxrB2Ekgc9c7sEC3CWGM6HeFmuDNUjX76Ert4Z4IY714dhZHPLd" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <link rel="stylesheet" href="style.css">    
+        
     </head>
     <body>
+        <div id="menu" class="pure-g">
+            <div id="header" class="pure-u-1-2">
+                <h1 id="title">Le jeu du Grand Simon !<span><img id="help" src="public/5a4613abd099a2ad03f9c992.png" alt="Règles du jeu"/></span></h1>
+            </div>
+        </div>
+
+        <div id="row" class="pure-g">
+            <div id="column" class="pure-u-1-2">
+
+                <div id="game">
+                    
+                </div>
+                <div id="tools">
+                    <button id="start" class="button-success pure-button">Start</button>
+                    <button id="restart" class="button-warning pure-button">Restart</button>
+                </div>
+                
+            </div>
+            
+        </div>
 
         
 
-     <script src="index.js"></script>   
+     <script src="index.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     </body>
 </html>
