@@ -1,0 +1,48 @@
+#start {
+
+}
+
+#row {
+    display: flex;
+    justify-content: center;
+    height: 400px;
+}
+
+#column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+}
+
+#game{
+    margin: 0 auto  ;
+    height: 80%;
+    width: 80%;
+    background-color: red;
+}
+
+#tools {
+    display: flex;
+    justify-content: center;
+}
+
+#menu {
+    display: flex;
+    justify-content: center;
+}
+
+#header {
+    text-align: center;
+}
+
+#help {
+    position: absolute;
+    padding-left: 8px;
+    width: 40px;
+    height: 40px;
+ }
+
+ #title {
+
+}
