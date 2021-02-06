@@ -1,14 +1,13 @@
 const start = document.getElementById('start');
 const help = document.getElementById('help');
 const infoPlayer = document.getElementById('info_player');
+const infoStat = document.getElementById('stat_player')
 const simon = document.getElementById('simon')
 const restart = document.getElementById('restart')
 
 let machineColors = [];
 let playerColors = [];
 let round = 0;
-
-
 
 help.addEventListener('click', showAlerte);
 start.addEventListener('click', startGame);
@@ -18,17 +17,19 @@ simon.addEventListener('click', event => {
     const colorHuman = event.target.id
 
     if(colorHuman) {
+        playerColors.push(colorHuman)
+        console.log(playerColors)
         lightColor(colorHuman)
         checkSuiteofColors(colorHuman)
     }
 })
 
-
 function checkSuiteofColors(colorHuman) {
-    const index = playerColors.push(colorHuman) - 1;
+    const index = playerColors.length - 1;
+    console.log(machineColors)
 
     if (playerColors[index] !== machineColors[index]) {
-        restartGame();
+        gameOver();
         return;
       }
 
@@ -46,38 +47,50 @@ function checkSuiteofColors(colorHuman) {
 
 function gameOver() {
     Swal.fire({
-        title: 'Game Over ! Do you want to replay ?',
+        title: 'Game Over ! Voulez vous rejouer ?',
+        icon: 'error',
         showCancelButton: true,
-        confirmButtonText: `Replay`,
-        denyButtonText: `Don't replay`,
+        confirmButtonText: `Rejouer`,
+        showCloseButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
+            restartGame()
+        } else {
+        console.log('okok')
           Swal.fire({
-              title: 'Start !'
-            })
-          setTimeout(() => {
-            startGame()
-          }, 2500) 
-        } else if (result.isDenied) {
-          Swal.fire('Merci d\'avoir participé !', '', 'info')
+                    title: 'Merci d\'avoir participé !',
+                    showConfirmButton: false,
+                    timer: 300,
+                    })
+            resetGame()
         }
       })
+}
+function resetGame() {
+    machineColors = [];
+    playerColors = [];
+    round = 0;
+    start.classList.remove('hidden');
+    infoPlayer.classList.add('hidden');
+    infoStat.classList.add('hidden')
 }
 
 function restartGame() {
     console.log("restart")
-    gameOver()
-    machineColors = [];
-    playerColors = [];
-    level = 0;
-    start.classList.remove('hidden');
-    infoPlayer.classList.add('hidden');
+    resetGame()
+    Swal.fire({
+        title: 'Restart !',
+        icon: 'success',
+        timer: 300,
+        showConfirmButton: false,
+    })
+    setTimeout(() => {
+        startGame()
+    }, 1000) 
+}
 
-  }
-function showAlerte() {
-    let help = document.getElementById('help');
-    help.addEventListener('click', event => {
-        event.preventDefault
+function showAlerte(event) {
+        event.preventDefault$
         Swal.fire({
             title: '<strong>Règle du <u>Grand Simon</u></strong> </br>',
             icon: 'info',
@@ -95,7 +108,6 @@ function showAlerte() {
             confirmButtonText:
                 '<i class="fa fa-thumbs-up"></i> Compris!',
             allowOutsideClick: false
-        });
     });
     console.log('show');    
 }
@@ -104,7 +116,7 @@ function lightColor(color = null) {
     console.log('ligh color')
     if(color !== null) {
         var color = document.getElementById(color);
-        color.style.opacity = '0.6';
+        color.style.opacity = '0.4';
         setTimeout(() => { color.style.opacity = '0.8'} , 300);  
     }
 }
@@ -120,7 +132,9 @@ function startGame() {
 
 function nextRound() {
     infoPlayer.innerText = ''
+    infoStat.innerText = ''
     displayInfoPlayer('Au tour de l\'ordinateur');
+    displayStatPlayer('Round(s): ' + round + ' | Couleurs tapée(s): ' + machineColors.length)
     console.log('Next round')
     round++;
 
@@ -130,14 +144,13 @@ function nextRound() {
 
     machineColors = [...nextMachineColors];
     setTimeout(() => {
-        playerRound(round)}, round * 600 + 1000)
+        playerRound(round, machineColors.length)}, round * 600 + 1000)
 }
-
 
 function nextColor() {
     console.log('Next color');
-    const colors = ['red', 'blue', 'yellow', 'green'];
-    const colorIs = colors[Math.floor(Math.random() * colors.length) ];
+    const colors = ['red', 'blue', 'yellow', 'green', 'pink', 'orange'];
+    const colorIs = colors[ Math.floor(Math.random() * colors.length) ];
 
     return colorIs;
 }
@@ -168,7 +181,24 @@ function displayInfoPlayer(texte) {
       });
 }
 
-function playerRound(round) {
+function displayStatPlayer(texte) {
+    console.log('displayStat');
+    infoStat.classList.remove('hidden');
+    infoStat.innerText += texte;
+
+    Popper.createPopper(infoPlayer, infoStat, {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 8],
+            },
+          },
+        ],
+      });
+}
+
+function playerRound(round, colorsTap) {
     console.log('Player ROUND')
     infoPlayer.innerText = ''
     displayInfoPlayer('A votre tour')
