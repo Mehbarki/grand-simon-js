@@ -81,7 +81,7 @@ function resetGame() {
     round = 0;
     countColorTap = 0;
     speed = 630;
-    start.classList.remove('hidden');
+    //start.classList.remove('hidden');
     infoPlayer.classList.add('hidden');
     infoStat.classList.add('hidden');
 }
