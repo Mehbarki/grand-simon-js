@@ -1,96 +1,107 @@
 const start = document.getElementById('start');
 const help = document.getElementById('help');
 const infoPlayer = document.getElementById('info_player');
-const infoStat = document.getElementById('stat_player')
-const simon = document.getElementById('simon')
-const restart = document.getElementById('restart')
+const infoStat = document.getElementById('stat_player');
+const simon = document.getElementById('simon');
+const restart = document.getElementById('restart');
 
 let machineColors = [];
 let playerColors = [];
 let round = 0;
+let countColorTap = 0;
+let speed = 600; //millisecondes
 
-help.addEventListener('click', showAlerte);
+help.addEventListener('click', helpGame);
 start.addEventListener('click', startGame);
-restart.addEventListener('click', restartGame)
+restart.addEventListener('click', restartGame);
 simon.addEventListener('click', event => {
-    console.log('Human click')
-    const colorHuman = event.target.id
+    console.log('Human click');
+    const colorHuman = event.target.id;
 
     if(colorHuman) {
-        playerColors.push(colorHuman)
-        console.log(playerColors)
-        lightColor(colorHuman)
-        checkSuiteofColors(colorHuman)
+        playerColors.push(colorHuman);
+        console.log(playerColors);
+        lightColor(colorHuman);
+        checkSuiteofColors(colorHuman);
+        countColorTap++
     }
-})
+});
 
 function checkSuiteofColors(colorHuman) {
     const index = playerColors.length - 1;
-    console.log(machineColors)
-
+    console.log(machineColors);
     if (playerColors[index] !== machineColors[index]) {
         gameOver();
         return;
-      }
+    }
 
     if( machineColors.length === playerColors.length) {
         playerColors = [];
-        infoPlayer.innerText = ''
-        displayInfoPlayer('Round validé ! Passez au prochain !')
+        infoPlayer.innerText = '';
+        displayInfoPlayer('Round validé ! Passez au prochain !');
 
         setTimeout(() => {
-            nextRound()
-        }, 1000)
+            nextRound();
+        }, 1000);
+
         return;
     }
 }
 
 function gameOver() {
+    console.log("game Over");
     Swal.fire({
         title: 'Game Over ! Voulez vous rejouer ?',
         icon: 'error',
         showCancelButton: true,
         confirmButtonText: `Rejouer`,
-        showCloseButton: true,
-      }).then((result) => {
+        cancelButtonText: 'Quitter',
+        allowOutsideClick: false,
+        text: 'Round(s): ' + round + ' | Couleur(s) tapée(s): ' + countColorTap 
+
+    }).then((result) => {
         if (result.isConfirmed) {
-            restartGame()
+            restartGame();
         } else {
-        console.log('okok')
-          Swal.fire({
+            console.log('okok');
+            Swal.fire({
                     title: 'Merci d\'avoir participé !',
                     showConfirmButton: false,
                     timer: 300,
-                    })
-            resetGame()
+                    });
+            resetGame();
         }
-      })
+    });
 }
+
 function resetGame() {
+    console.log('resetGame');
     machineColors = [];
     playerColors = [];
     round = 0;
+    countColorTap = 0;
+    speed = 600;
     start.classList.remove('hidden');
     infoPlayer.classList.add('hidden');
-    infoStat.classList.add('hidden')
+    infoStat.classList.add('hidden');
 }
 
 function restartGame() {
-    console.log("restart")
-    resetGame()
+    console.log("restart");
+    resetGame();
     Swal.fire({
         title: 'Restart !',
         icon: 'success',
         timer: 300,
         showConfirmButton: false,
-    })
+    });
     setTimeout(() => {
-        startGame()
-    }, 1000) 
+        startGame();
+    }, 1000);
 }
 
-function showAlerte(event) {
-        event.preventDefault$
+function helpGame(event) {
+        event.preventDefault;
         Swal.fire({
             title: '<strong>Règle du <u>Grand Simon</u></strong> </br>',
             icon: 'info',
@@ -106,17 +117,17 @@ function showAlerte(event) {
                 'Le but du jeu étant de reproduire la plus longue suite de couleurs',
             showCloseButton: true,
             confirmButtonText:
-                '<i class="fa fa-thumbs-up"></i> Compris!',
+                '<i class="fa fa-thumbs-up"></i> Compris !',
             allowOutsideClick: false
     });
     console.log('show');    
 }
 
 function lightColor(color = null) {
-    console.log('ligh color')
+    console.log('ligh color');
     if(color !== null) {
         var color = document.getElementById(color);
-        color.style.opacity = '0.4';
+        color.style.opacity = '0.2';
         setTimeout(() => { color.style.opacity = '0.8'} , 300);  
     }
 }
@@ -124,18 +135,19 @@ function lightColor(color = null) {
 function startGame() {
     console.log("start");
     start.classList.add('hidden');
-    restart.style.display = 'block'
-    simon.style.pointerEvents = 'auto'
+    restart.style.display = 'block';
+    simon.style.pointerEvents = 'auto';
+    infoPlayer.innerText = ''
     displayInfoPlayer('Au tour de l\'ordinateur');
     nextRound();
 }
 
 function nextRound() {
-    infoPlayer.innerText = ''
-    infoStat.innerText = ''
+    infoPlayer.innerText = '';
+    infoStat.innerText = '';
     displayInfoPlayer('Au tour de l\'ordinateur');
-    displayStatPlayer('Round(s): ' + round + ' | Couleurs tapée(s): ' + machineColors.length)
-    console.log('Next round')
+    displayStatPlayer('Round(s): ' + round + ' | Couleur(s) tapée(s): ' + countColorTap);
+    console.log('Next round');
     round++;
 
     const nextMachineColors = [...machineColors];
@@ -143,8 +155,10 @@ function nextRound() {
     machineRound(nextMachineColors);
 
     machineColors = [...nextMachineColors];
+   
     setTimeout(() => {
-        playerRound(round, machineColors.length)}, round * 600 + 1000)
+        playerRound(round, machineColors.length);
+    }, (machineColors.length + 1) * speed);
 }
 
 function nextColor() {
@@ -156,11 +170,14 @@ function nextColor() {
 }
 
 function machineRound(nextMachineColors) {
-    console.log("Machine round")
+    console.log("Machine round");
+    if( round < 8 ) {
+        speed -= 35;
+    }
     nextMachineColors.forEach((color, index) => {
         setTimeout(() => {
-            lightColor(color)
-        }, (index + 1) * 600)
+            lightColor(color);
+        }, (index + 1) * speed);
     });
 }
 
@@ -178,7 +195,7 @@ function displayInfoPlayer(texte) {
             },
           },
         ],
-      });
+    });
 }
 
 function displayStatPlayer(texte) {
@@ -195,12 +212,11 @@ function displayStatPlayer(texte) {
             },
           },
         ],
-      });
+    });
 }
 
-function playerRound(round, colorsTap) {
-    console.log('Player ROUND')
-    infoPlayer.innerText = ''
-    displayInfoPlayer('A votre tour')
-
+function playerRound() {
+    console.log('Player ROUND');
+    infoPlayer.innerText = '';
+    displayInfoPlayer('A votre tour');
 }
