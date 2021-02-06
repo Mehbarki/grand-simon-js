@@ -25,7 +25,7 @@
 #tools {
     display: flex;
     justify-content: space-around;
-    margin-top: 40px;
+    margin-top: 65px;
 }
 
 #menu {
@@ -91,6 +91,14 @@ td:hover {
     background-color: rgba(245, 229, 27, 0.8);
 }
 
+#orange {
+    background-color: rgba(221, 117, 47, 0.8);
+}
+
+#pink {
+    background-color: rgba(231, 62, 203, 0.8);
+}
+
 .button-success,
 .button-error,
 .button-warning {
@@ -114,4 +122,14 @@ td:hover {
     padding: 4px 8px;
     font-size: 13px;
     border-radius: 4px;
+}
+
+#stat_player {
+    background: #333;
+    color: white;
+    font-weight: bold;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    text-align: center;
 }
