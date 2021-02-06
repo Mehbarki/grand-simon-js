@@ -9,7 +9,7 @@ let machineColors = [];
 let playerColors = [];
 let round = 0;
 let countColorTap = 0;
-let speed = 600; //millisecondes
+let speed = 630; //millisecondes
 
 help.addEventListener('click', helpGame);
 start.addEventListener('click', startGame);
@@ -80,7 +80,7 @@ function resetGame() {
     playerColors = [];
     round = 0;
     countColorTap = 0;
-    speed = 600;
+    speed = 630;
     start.classList.remove('hidden');
     infoPlayer.classList.add('hidden');
     infoStat.classList.add('hidden');
@@ -172,13 +172,14 @@ function nextColor() {
 function machineRound(nextMachineColors) {
     console.log("Machine round");
     if( round < 8 ) {
-        speed -= 35;
+        speed -= 30;
     }
     nextMachineColors.forEach((color, index) => {
         setTimeout(() => {
             lightColor(color);
         }, (index + 1) * speed);
     });
+    console.log('SPEED ' + speed)
 }
 
 function displayInfoPlayer(texte) {
